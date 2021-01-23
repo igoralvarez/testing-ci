@@ -1,26 +1,35 @@
-// import React from 'react';
-// import { renderHook, act } from '@testing-library/react-hooks';
-// import { LanguageProvider } from './language.context';
-// import { useLanguage } from './language.hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
+import { LanguageProvider } from './language.context';
+import { useLanguage } from './language.hooks';
 
-// const Wrapper: React.FunctionComponent = (props) => {
-//   return <LanguageProvider>{props.children}</LanguageProvider>;
-// };
+describe('useLanguage specs', () => {
+  it('should return a message with language equals "es" when it renders the hook', () => {
+    // Arrange
 
-// describe('useLanguage specs', () => {
-//   it('should return a message with language equals "es" when it renders the hook', () => {
-//     // Arrange
+    // Act
+    const { result } = renderHook(() => useLanguage(), {
+      wrapper: LanguageProvider,
+    });
 
-//     // Act
-//     const { result } = renderHook(() => useLanguage(), {
-//       wrapper: Wrapper,
-//     });
+    result.current.setLanguage('es');
 
-//     act(() => {
-//       result.current.setLanguage('es');
-//     });
+    // Assert
+    expect(result.current.message).toEqual('The current language is: es');
+  });
 
-//     // Assert
-//     expect(result.current.message).toEqual('The current language is: es');
-//   });
-// });
+  it('should return a message with language equals "english" when it call setLanguage with "english"', () => {
+    // Arrange
+
+    // Act
+    const { result } = renderHook(() => useLanguage(), {
+      wrapper: LanguageProvider,
+    });
+
+    act(() => {
+      result.current.setLanguage('english');
+    });
+
+    // Assert
+    expect(result.current.message).toEqual('The current language is: english');
+  });
+});
